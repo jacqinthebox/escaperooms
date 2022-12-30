@@ -1,0 +1,63 @@
+<!-- base.html -->
+
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Escape Room Tracer</title>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bulma@0.9.3/css/bulma.min.css">
+    <script defer src="https://use.fontawesome.com/releases/v5.14.0/js/all.js"></script>
+  </head>
+  <body>
+    <nav class="navbar" role="navigation" aria-label="main navigation">
+      <div class="navbar-brand">
+        <a class="navbar-item" href="/">
+          <h1 class="title is-5">The Escape Room Tracer</h1>
+        </a>
+
+        <a role="button" class="navbar-burger burger" aria-label="menu" aria-expanded="false" data-target="navbarBasicExample">
+          <span aria-hidden="true"></span>
+          <span aria-hidden="true"></span>
+          <span aria-hidden="true"></span>
+        </a>
+      </div>
+
+      <div id="navbarBasicExample" class="navbar-menu">
+        <div class="navbar-start">
+          <a class="navbar-item" href="/">
+            Home
+          </a>
+        </div>
+
+        <div class="navbar-end">
+          {% if 'email' in request.cookies %}
+            <div class="navbar-item has-dropdown is-hoverable">
+              <a class="navbar-link">
+                {{ request.cookies.get('email') }}
+              </a>
+
+              <div class="navbar-dropdown">
+                <a class="navbar-item" href="{{ url_for('logout') }}">
+                  Logout
+                </a>
+              </div>
+            </div>
+          {% else %}
+            <div class="navbar-item">
+              <a class="button is-primary" href="{{ url_for('register') }}">
+                <strong>Sign up</strong>
+              </a>
+            </div>
+          {% endif %}
+        </div>
+      </div>
+    </nav>
+
+    {% block content %}{% endblock %}
+      <section class="section">
+        <img src="https://images.creativemarket.com/0.1.0/ps/2878131/1400/1000/m1/fpnw/wm0/escape-room-logo-1-.jpg?1498072106&s=2efdcd98bfce8eb4c7c06819c3ea586d" width="40%">
+
+      </section>
+  </body>
+</html>
