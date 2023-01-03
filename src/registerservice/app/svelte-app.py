@@ -5,9 +5,9 @@ import bcrypt
 import pyodbc
 from flask_cors import CORS
 
-
 app = Flask(__name__)
 CORS(app)
+
 app.secret_key = 'secret key'
 
 
@@ -16,13 +16,15 @@ def create_database():
     database = 'master'
     username = 'sa'
     password = '123Tralala^'
-    conn = pyodbc.connect('DRIVER={ODBC Driver 17 for SQL Server};SERVER='+server+';DATABASE='+database+';UID='+username+';PWD='+ password)
+    conn = pyodbc.connect(
+        'DRIVER={ODBC Driver 17 for SQL Server};SERVER=' + server + ';DATABASE=' + database + ';UID=' + username + ';PWD=' + password)
 
     # Create the database
     cursor = conn.cursor()
     conn.autocommit = True
     # cursor.execute("CREATE DATABASE mydatabase")
-    cursor.execute("if not exists (select * from sys.databases where name = 'mydatabase') begin create database mydatabase end")
+    cursor.execute(
+        "if not exists (select * from sys.databases where name = 'mydatabase') begin create database mydatabase end")
     cursor.close()
 
 
@@ -92,7 +94,6 @@ def retrieve_password_hash_for_user(email):
 
 @app.route('/register', methods=['POST'])
 def register():
-
     data = request.get_json()
     team_name = data['TeamName']
     password = data['Password']
@@ -120,28 +121,34 @@ def register():
 def login():
     if request.method == 'POST':
         # Get the username and password from the form submission
-        email = request.form['email']
-        password = request.form['password']
+
+        data = request.get_json()
+        email = data['email']
+        password = data['password']
         stored_password_hash = retrieve_password_hash_for_user(email)
 
         if stored_password_hash and verify_password(password, stored_password_hash):
             # Create a response object and set the username cookie
             # app.email = email
             team = db_session.query(Team).filter_by(Email=email).first()
-            session['email'] = email
+            # session['email'] = email
             # session['team'] = team
-            response = make_response(redirect(url_for('index')))
-            response.set_cookie('email', email)
-            response.set_cookie('team', team.TeamName)
-            return response
+            # response = make_response(redirect(url_for('index')))
+            # response.set_cookie('email', email)
+            # response.set_cookie('team', team.TeamName)
+            # return response
             # return render_template('index.html', team=team.TeamName)
+
+            return jsonify({'message': 'Login successful!', 'teamName': team.TeamName}), 200
 
         else:
             # password is incorrect
+
             # display an error message or redirect back to the login form
-            return render_template('login.html', error='Incorrect username or password')
+            # return render_template('login.html', error='Incorrect username or password')
+            return jsonify({'message': 'Wrong password!'}), 400
     else:
-        return render_template('login.html')
+        return jsonify({'message': 'Not sure what happened'}), 200
 
 
 @app.route('/')
