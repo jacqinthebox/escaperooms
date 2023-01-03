@@ -1,48 +1,18 @@
-name: helm-ci
+name: Helm chart release
 
 on:
-  # workflow_run:
-  #   workflows: ["plumbing"]
-  #   types:
-  #     - completed
   workflow_dispatch:
-    push:
-      branches:
-      - main
-
-      paths:
-      - deploy/helm-values/**
-
-env:
-  ACR_NAME: demo01cr
-  CHART_VERSION: 1.0.2-latest # use hardcoded latest version by initial rollout
 
 jobs:
-  push-helm-chart:
-    name: Publish Helm chart eshopondapr to ACR
-    # if: ${{ github.event.workflow_run.conclusion == 'success' }}
+  build:
     runs-on: ubuntu-latest
-    environment: prod
     steps:
-      - name: Checkout repo
-        uses: actions/checkout@v2
-      
-      - name: Install Helm
-        uses: Azure/setup-helm@v1
-      
-      - name: Login to ACR using Helm
-        run: |
-          echo $ | helm registry login  ${{ env.ACR_NAME }}.azurecr.io --username ${{ secrets.USERNAME }} --password ${{ secrets.PASSWORD }}
-
-      - name: Lint and check the chart
-        run: |
-          helm lint deploy/charts/eshopondapr
-          helm template deploy/charts/eshopondapr
-
-      - name: Save Helm chart to local registry
-        run: |
-          helm package deploy/charts/eshopondapr --version ${{ env.CHART_VERSION }}
-            
-      - name: Publish chart to ACR
-        run: |
-          helm push eshopondapr-${{ env.CHART_VERSION }}.tgz oci://${{ env.ACR_NAME }}.azurecr.io/helm
+      - uses: actions/checkout@v2
+      - uses: actions/setup-helm@v2
+        with:
+          version: 3.4.1
+      - run: helm package .
+      - run: |
+          echo "${{ secrets.GH_PAT }}" | docker login docker.pkg.github.com -u "${{ secrets.GH_USERNAME }}" --password-stdin
+          docker build -t docker.pkg.github.com/${{ secrets.REPO_OWNER }}/${{ secrets.REPO_NAME }}:${{ github.sha }} .
+          docker push docker.pkg.github.com/${{ secrets.REPO_OWNER }}/${{ secrets.REPO_NAME }}:${{ github.sha }}
