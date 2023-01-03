@@ -1,7 +1,0 @@
-CREATE TABLE Teams (
-    Id INT PRIMARY KEY IDENTITY,
-    TeamName VARCHAR(80) NOT NULL,
-    ContactName VARCHAR(80) NOT NULL,
-    Email VARCHAR(80) NOT NULL,
-    PasswordHash VARCHAR(128) NOT NULL
-);
