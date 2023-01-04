@@ -7,6 +7,7 @@
     let email = '';
     let password = '';
     let errorMessage = '';
+    let teamName = '';
 
     async function handleSubmit(event) {
         event.preventDefault();
@@ -30,7 +31,8 @@
                 errorMessage = "Wrong password or username (or this login function fails miserably)" + response.url;
             } else {
                 Cookies.set('email', email, {expires: 3600});
-                Cookies.set('teamName', data.teamName, {expires: 3600});
+                teamName = data.teamName;
+                Cookies.set('teamName', teamName, {expires: 3600});
                 window.location = '/';
             }
         } catch (error) {

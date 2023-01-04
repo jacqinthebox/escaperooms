@@ -128,27 +128,14 @@ def login():
         stored_password_hash = retrieve_password_hash_for_user(email)
 
         if stored_password_hash and verify_password(password, stored_password_hash):
-            # Create a response object and set the username cookie
-            # app.email = email
             team = db_session.query(Team).filter_by(Email=email).first()
-            # session['email'] = email
-            # session['team'] = team
-            # response = make_response(redirect(url_for('index')))
-            # response.set_cookie('email', email)
-            # response.set_cookie('team', team.TeamName)
-            # return response
-            # return render_template('index.html', team=team.TeamName)
-
+            if team is None:
+                return 'Team not found', 404
             return jsonify({'message': 'Login successful!', 'teamName': team.TeamName}), 200
-
         else:
-            # password is incorrect
-
-            # display an error message or redirect back to the login form
-            # return render_template('login.html', error='Incorrect username or password')
             return jsonify({'message': 'Wrong password!'}), 400
     else:
-        return jsonify({'message': 'Not sure what happened'}), 200
+        return jsonify({'message': 'The API is working'}), 200
 
 
 @app.route('/')
