@@ -12,6 +12,7 @@ app.secret_key = 'secret key'
 
 
 def create_database():
+
     server = 'sqledge'
     database = 'master'
     username = 'sa'

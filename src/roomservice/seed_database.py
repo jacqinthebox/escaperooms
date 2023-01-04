@@ -31,8 +31,8 @@ cursor.execute('''
 conn.commit()
 
 # Insert some rows
-cursor.execute("INSERT INTO users (name, email) VALUES (?, ?)", "Alice", "alice@example.com")
-cursor.execute("INSERT INTO users (name, email) VALUES (?, ?)", "Bob", "bob@example.com")
+cursor.execute("INSERT INTO users (name, email) VALUES (?, ?)", "Alice", "alice@temp.com")
+cursor.execute("INSERT INTO users (name, email) VALUES (?, ?)", "Bob", "bob@temp.com")
 conn.commit()
 """
 # Close the connection

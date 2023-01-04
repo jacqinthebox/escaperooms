@@ -4,7 +4,7 @@ WORKDIR /usr/src/app
 
 COPY src/frontend/rollup.config.js ./
 COPY src/frontend/package*.json ./
-
+COPY src/frontend/.env ./
 RUN npm install
 
 COPY src/frontend/src ./src
