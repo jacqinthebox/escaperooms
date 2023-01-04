@@ -1,37 +1,38 @@
-from flask import Flask, render_template, request, make_response, redirect, url_for, session, jsonify
+from flask import Flask, render_template, request, make_response, redirect, url_for, jsonify
 from sqlalchemy.orm import declarative_base, sessionmaker
 from sqlalchemy import create_engine, Column, String, Integer
 import bcrypt
 import pyodbc
 from flask_cors import CORS
+import os
 
 app = Flask(__name__)
 CORS(app)
 
-app.secret_key = 'secret key'
+server = os.getenv("DB_SERVER")  # localhost or sqledge (container name)
+database = os.getenv("DB_NAME")  # whatever db
+username = os.getenv("DB_USERNAME")  # sa
+db_password = os.getenv("DB_PASSWORD")
+app.secret_key = os.getenv("APP_SECRET_KEY")
+master_database = "master"
 
 
 def create_database():
-
-    server = 'sqledge'
-    database = 'master'
-    username = 'sa'
-    password = '123Tralala^'
     conn = pyodbc.connect(
-        'DRIVER={ODBC Driver 17 for SQL Server};SERVER=' + server + ';DATABASE=' + database + ';UID=' + username + ';PWD=' + password)
+        'DRIVER={ODBC Driver 17 for SQL Server};SERVER=' + server + ';DATABASE=' + master_database + ';UID=' + username + ';PWD=' + db_password)
 
     # Create the database
     cursor = conn.cursor()
     conn.autocommit = True
-    # cursor.execute("CREATE DATABASE mydatabase")
     cursor.execute(
-        "if not exists (select * from sys.databases where name = 'mydatabase') begin create database mydatabase end")
+        "if not exists (select * from sys.databases where name = '" + database + "') begin create database " + database + " end")
     cursor.close()
 
 
 create_database()
 
-engine = create_engine('mssql+pyodbc://sa:123Tralala^@sqledge/mydatabase?driver=ODBC+Driver+17+for+SQL+Server')
+# engine = create_engine('mssql+pyodbc://sa:123Tralala^@localhost/mydatabase?driver=ODBC+Driver+17+for+SQL+Server') # sqledge
+engine = create_engine('mssql+pyodbc://' + username + ':' + db_password + '@' + server + '/' + database + '?driver=ODBC+Driver+17+for+SQL+Server')  # sqledge
 # Create the base class for our models
 Base = declarative_base()
 
@@ -141,22 +142,12 @@ def login():
 
 @app.route('/')
 def index():
-    # Check if the user is logged in
-    if 'email' in request.cookies:
-        email = request.cookies.get('email')
-        team = request.cookies.get('team')
-        return render_template('index.html', team=team)
-    else:
-        return redirect(url_for('login'))
+    return jsonify({'message': 'The API is working'}), 200
 
 
 @app.route('/logout')
 def logout():
-    # Create a response object and delete the username cookie
-    response = make_response(redirect(url_for('index')))
-    response.delete_cookie('email')
-    response.delete_cookie('team')
-    return response
+    return jsonify({'message': 'The API is working'}), 200
 
 
 if __name__ == '__main__':

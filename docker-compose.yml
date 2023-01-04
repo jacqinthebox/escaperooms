@@ -17,6 +17,12 @@ services:
 
   register-service:
     image: registerservice:latest
+    environment:
+      - DB_SERVER=sqledge
+      - DB_NAME=FLOEPS
+      - DB_PASSWORD=123Tralala^
+      - DB_USERNAME=sa
+      - APP_SECRET_KEY=SomeNiceSecretKey
     build:
       context: .
       dockerfile: src/registerservice/Dockerfile
