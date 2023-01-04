@@ -1,0 +1,47 @@
+version: '3.4'
+
+services:
+
+  # rabbitmq:
+  #   image: rabbitmq:3-management-alpine
+  #   ports:
+  #     - "5672:5672"
+
+  sqledge:
+    image: mcr.microsoft.com/azure-sql-edge:latest
+    environment:
+      - MSSQL_SA_PASSWORD=123Tralala^
+      - ACCEPT_EULA=Y
+    ports:
+      - "1433:1433"
+
+  register-service:
+    image: registerservice:latest
+    build:
+      context: .
+      dockerfile: src/registerservice/Dockerfile
+    depends_on:
+      - sqledge
+    ports:
+      - "5000:5000"
+
+  frontend:
+    image: escape-fe:latest
+    build:
+      context: .
+      dockerfile: src/frontend/Dockerfile
+    depends_on:
+      - register-service
+      - sqledge
+    ports:
+      - "8080:8080"
+
+  # roomservice:
+  #   image: roomservice:latest
+  #   build:
+  #     context: .
+  #     dockerfile: src/roomservice/Dockerfile
+  #   depends_on:
+  #     - rabbimq
+  #     - sqldata
+  
