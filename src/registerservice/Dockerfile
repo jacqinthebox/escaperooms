@@ -4,7 +4,7 @@ FROM python:3.11
 WORKDIR /app
 
 # Copy the requirements.txt file to the working directory
-COPY requirements.txt .
+COPY src/registerservice/requirements.txt .
 
 # Install the dependencies
 RUN curl https://packages.microsoft.com/keys/microsoft.asc | apt-key add -
@@ -22,10 +22,10 @@ RUN apt-get install -y libgssapi-krb5-2
 COPY . .
 
 # Expose the application on port 5000
-EXPOSE 5001
+EXPOSE 5000
 
 # Set the entry point to the Flask application
 ENTRYPOINT ["python"]
 
 # Set the command to start the Flask application
-CMD ["app/main.py"]
+CMD ["src/registerservice/app/main.py"]

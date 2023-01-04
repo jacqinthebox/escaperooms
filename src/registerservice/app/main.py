@@ -12,7 +12,7 @@ app.secret_key = 'secret key'
 
 
 def create_database():
-    server = 'localhost'
+    server = 'sqledge'
     database = 'master'
     username = 'sa'
     password = '123Tralala^'
@@ -30,7 +30,7 @@ def create_database():
 
 create_database()
 
-engine = create_engine('mssql+pyodbc://sa:123Tralala^@localhost/mydatabase?driver=ODBC+Driver+17+for+SQL+Server')
+engine = create_engine('mssql+pyodbc://sa:123Tralala^@sqledge/mydatabase?driver=ODBC+Driver+17+for+SQL+Server')
 # Create the base class for our models
 Base = declarative_base()
 
@@ -159,4 +159,5 @@ def logout():
 
 
 if __name__ == '__main__':
-    app.run(debug=True, port=5001)
+    app.run(debug=True, host='0.0.0.0')
+    # app.run(debug=True, port=5001)
