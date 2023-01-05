@@ -26,7 +26,7 @@ jobs:
           username: ${{ secrets.GH_USERNAME }}
           password: ${{ secrets.GH_TOKEN }}
           registry: ghcr.io
-          repository: jacqinthebox/escaperooms
+          repository: github/${{ secrets.GH_USERNAME }}
           tag: latest {{ github.sha }} ${{ steps.next_tag.outputs.SemVer2 }}
           context: src/frontend
       - name: Create Git tag
