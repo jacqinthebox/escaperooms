@@ -4,7 +4,10 @@ on:
   push:
     paths:
       - src/frontend/*
-
+    branches:
+      except:
+        - main
+  workflow_dispatch:
 
 jobs:
   build:
