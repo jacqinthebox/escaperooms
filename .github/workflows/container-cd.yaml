@@ -35,6 +35,7 @@ jobs:
           push: true
           tags: | 
             ghcr.io/${{ github.repository_owner }}/escaperooms/frontend:${{ steps.next_tag.outputs.SimpleVersion }}
+            ghcr.io/${{ github.repository_owner }}/escaperooms/frontend:${{ steps.next_tag.outputs.GitCommitId }}
             ghcr.io/${{ github.repository_owner }}/escaperooms/frontend:latest
       - name: Create Git tag
         uses: actions/create-release@v1
@@ -42,6 +43,6 @@ jobs:
           GITHUB_TOKEN: ${{ secrets.GH_TOKEN }}
         with:
           tag_name: ${{ steps.next_tag.outputs.SimpleVersion }}
-          release_name: frontend-${{ steps.next_tag.outputs.SimpleVersion }}
+          release_name: escaperooms-${{ steps.next_tag.outputs.SimpleVersion }}
           draft: false
           prerelease: false
