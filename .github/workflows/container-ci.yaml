@@ -35,7 +35,8 @@ jobs:
           repository: jacqinthebox/escaperooms
           push: true
           tags: | 
-            ghcr.io/${{ github.repository_owner }}/escaperooms/frontend:${{ steps.next_tag.outputs.SimpleVersion }}
+            ghcr.io/${{ github.repository_owner }}/escaperooms/frontend:${{ steps.next_tag.outputs.GitCommitId }}
+            ghcr.io/${{ github.repository_owner }}/escaperooms/frontend:${{ steps.next_tag.outputs.SemVer2 }}
       - name: Create Git tag
         uses: actions/create-release@v1
         env:
