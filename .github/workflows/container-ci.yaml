@@ -33,7 +33,7 @@ jobs:
           push: true
           tags: | 
             latest 
-            {{ github.sha }} 
+            ${{ github.sha }} 
             ${{ steps.next_tag.outputs.SemVer2 }}
       - name: Create Git tag
         uses: actions/create-release@v1
