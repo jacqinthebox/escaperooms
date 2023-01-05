@@ -24,7 +24,6 @@ jobs:
         uses: dotnet/nbgv@master
         with:
           setAllVars: true
-      - run: echo "NBGV_SemVer2 $NBGV_SemVer2"
       - name: Create Git tag
         uses: actions/create-release@v1
         env:
