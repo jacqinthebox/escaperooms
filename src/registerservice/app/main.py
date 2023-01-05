@@ -94,29 +94,30 @@ def retrieve_password_hash_for_user(email):
         return None
 
 
-@app.route('/api/register', methods=['GET','POST'])
+@app.route('/api/register', methods=['GET', 'POST'])
 def register():
-    data = request.get_json()
-    team_name = data['TeamName']
-    password = data['Password']
-    contact_name = data['ContactName']
-    email = data['Email']
+    if request.method == 'POST':
+        data = request.get_json()
+        team_name = data['TeamName']
+        password = data['Password']
+        contact_name = data['ContactName']
+        email = data['Email']
 
-    # Get the username and password from the form submission
+        # Get the username and password from the form submission
 
-    team = db_session.query(Team).filter_by(TeamName=team_name).first()
-    registered_mail = db_session.query(Team).filter_by(Email=email).first()
-    # Check if the username is already taken
-    if team in teams:
-        return jsonify({'message': 'Team already registered! Yikes.'}), 409
-    elif registered_mail in teams:
-        return jsonify({'message': 'That email is already registered! Yikes'}), 409
-    else:
-        password_hash = hash_password(password)
-        new_team = Team(TeamName=team_name, ContactName=contact_name, Email=email, PasswordHash=password_hash)
-        db_session.add(new_team)
-        db_session.commit()
-        return jsonify({'message': 'Team has been added to the database'}), 200
+        team = db_session.query(Team).filter_by(TeamName=team_name).first()
+        registered_mail = db_session.query(Team).filter_by(Email=email).first()
+        # Check if the username is already taken
+        if team in teams:
+            return jsonify({'message': 'Team already registered! Yikes.'}), 409
+        elif registered_mail in teams:
+            return jsonify({'message': 'That email is already registered! Yikes'}), 409
+        else:
+            password_hash = hash_password(password)
+            new_team = Team(TeamName=team_name, ContactName=contact_name, Email=email, PasswordHash=password_hash)
+            db_session.add(new_team)
+            db_session.commit()
+            return jsonify({'message': 'Team has been added to the database'}), 200
 
 
 @app.route('/api/login', methods=['GET', 'POST'])
