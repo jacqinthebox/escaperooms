@@ -118,7 +118,8 @@ def register():
             db_session.add(new_team)
             db_session.commit()
             return jsonify({'message': 'Team has been added to the database'}), 200
-
+    else:
+        return jsonify({'message': 'Helo'}), 200
 
 @app.route('/api/login', methods=['GET', 'POST'])
 def login():
