@@ -5,7 +5,6 @@ on:
     paths:
       - src/frontend/*
     branches:
-      except:
         - main
 
 jobs:
@@ -35,6 +34,7 @@ jobs:
           push: true
           tags: | 
             ghcr.io/${{ github.repository_owner }}/escaperooms/frontend:${{ steps.next_tag.outputs.SimpleVersion }}
+            ghcr.io/${{ github.repository_owner }}/escaperooms/frontend:${{ steps.next_tag.outputs.SemVer2 }}
       - name: Create Git tag
         uses: actions/create-release@v1
         env:
@@ -42,5 +42,5 @@ jobs:
         with:
           tag_name: ${{ steps.next_tag.outputs.SemVer2 }}
           release_name: Release ${{ github.sha }}
-          draft: true
-          prerelease: true
+          draft: false
+          prerelease: false
