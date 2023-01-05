@@ -2,8 +2,8 @@ name: Frontend Container CI
 
 on:
   push:
-    paths:
-      - src/frontend/*
+#    paths:
+#      - src/frontend/*
 #    branches:
 #      except:
 #        - main
@@ -19,9 +19,9 @@ jobs:
           docker build -t ghcr.io/jacqinthebox/escaperooms/frontend:latest .
       - name: Get next semver tag
         id: next_tag
-        uses: nerdbank/gitversion-action@v1
+        uses: dotnet/nbgv@master
         with:
-          major-minor-patch: true
+          args: '-showvariable MajorMinorPatch'
       - name: Push Docker image
         uses: docker/push-action@v1
         with:
