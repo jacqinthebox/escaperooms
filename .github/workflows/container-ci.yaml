@@ -26,14 +26,14 @@ jobs:
         uses: docker/push-action@v1
         with:
           registry: docker.pkg.github.com
-          repository: ghcr.io/jacqinthebox
+          repository: ghcr.io/${{ secrets.GH_USERNAME }}
           tag: latest
-          username: ${{ secrets.GITHUB_USERNAME }}
-          password: ${{ secrets.GITHUB_TOKEN }}
+          username: ${{ secrets.GH_USERNAME }}
+          password: ${{ secrets.GH_TOKEN }}
       - name: Create Git tag
         uses: actions/create-release@v1
         env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          GITHUB_TOKEN: ${{ secrets.GH_TOKEN }}
         with:
           tag_name: ${{ steps.next_tag.outputs.semver }}
           release_name: Release ${{ github.sha }}
