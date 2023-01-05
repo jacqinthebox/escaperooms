@@ -45,4 +45,4 @@ jobs:
           tag_name: ${{ steps.next_tag.outputs.SimpleVersion }}
           release_name: escaperooms-${{ steps.next_tag.outputs.SimpleVersion }}
           draft: false
-          prerelease: false
+          prerelease: true
