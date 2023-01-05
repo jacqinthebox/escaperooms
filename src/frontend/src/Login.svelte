@@ -1,8 +1,17 @@
 <script>
     import Cookies from 'js-cookie';
+    import {onMount} from "svelte";
     //import {set} from 'svelte/store';
     //import {teamStore} from './store.js';
-    const apiUrl = process.env.API_URL;
+    const envApiUrl = process.env.API_URL;
+
+    let apiUrl;
+
+    onMount(() => {
+        apiUrl = `${window.location.protocol}//${window.location.host}`;
+    });
+
+
 
     let email = '';
     let password = '';
@@ -13,7 +22,7 @@
         event.preventDefault();
 
         try {
-            const response = await fetch(process.env.API_URL + '/login', {
+            const response = await fetch(apiUrl + '/api/login', {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json'

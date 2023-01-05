@@ -34,7 +34,7 @@ spec:
           image: ghcr.io/jacqinthebox/escaperooms/registerservice:latest
           env:
             - name: DB_SERVER
-              value: sqledge-service
+              value: sqledge
             - name: DB_NAME
               value: FLOEPS
             - name: DB_PASSWORD
@@ -45,6 +45,12 @@ spec:
               value: SomeNiceSecretKey
           ports:
             - containerPort: 5000
+          volumeMounts:
+            - name: register-service-volume
+              mountPath: /app
+      volumes:
+        - name: register-service-volume
+          emptyDir: {}
 ---
 apiVersion: v1
 kind: Service
@@ -127,11 +133,3 @@ spec:
           image: rabbitmq:3-management-alpine
           ports:
             - containerPort: 5672
----
-apiVersion: v1
-data:
-  .env: |
-    API_URL=http://0.0.0.0:5000
-kind: ConfigMap
-metadata:
-  name: frontend-configmap

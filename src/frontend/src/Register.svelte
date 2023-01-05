@@ -1,5 +1,13 @@
 <script>
     import Success from "./Success.svelte";
+    import {onMount} from "svelte";
+
+    let apiUrl;
+
+    onMount(() => {
+        apiUrl = `${window.location.protocol}//${window.location.host}`;
+    });
+
 
     let team_name = '';
     let contact_name = '';
@@ -30,7 +38,7 @@
         event.preventDefault();
 
         try {
-            const response = await fetch(process.env.API_URL + '/register', {
+            const response = await fetch(apiUrl + '/api/register', {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json'

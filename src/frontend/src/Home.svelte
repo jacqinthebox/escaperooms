@@ -7,6 +7,14 @@
     let teamName = ''
     console.log(process.env.API_URL);
 
+
+    let apiUrl;
+
+    onMount(() => {
+        apiUrl = `${window.location.protocol}//${window.location.host}`;
+    });
+
+
     function getCookie(name) {
         const value = `; ${document.cookie}`;
         const parts = value.split(`; ${name}=`);
@@ -18,8 +26,8 @@
     onMount(() => {
         if (!getCookie('email')) {
             console.log("No email cookie")
-
             redirect.set('/login');
+            console.log("Generated api url: " + apiUrl)
             console.log($redirect)
         } else {
             //there is a cookie and we can use its value
