@@ -5,8 +5,8 @@ on:
     paths:
       - src/frontend/*
     branches:
-      except:
-        - main
+      - '*''
+      - '!main'
   workflow_dispatch:
 
 jobs:
