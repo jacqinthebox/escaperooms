@@ -1,10 +1,11 @@
-name: Frontend Container CI
+name: Frontend Container CD
 
 on:
   push:
     paths:
       - src/frontend/*
     branches:
+      only:
       - main
 
 jobs:
