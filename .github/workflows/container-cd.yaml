@@ -41,7 +41,7 @@ jobs:
         env:
           GITHUB_TOKEN: ${{ secrets.GH_TOKEN }}
         with:
-          tag_name: ${{ steps.next_tag.outputs.SemVer2 }}
-          release_name: Release ${{ github.sha }}
+          tag_name: ${{ steps.next_tag.outputs.SimpleVersion }}
+          release_name: frontend-${{ steps.next_tag.outputs.SimpleVersion }}
           draft: false
           prerelease: false
