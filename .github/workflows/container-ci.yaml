@@ -16,4 +16,4 @@ jobs:
       - name: Build Docker image
         run: |
           cd src/frontend
-          docker build -t ghcr.io/jacqinthebox/escaperooms/frontend:latest .
+          docker build -t ghcr.io/${{ secrets.GH_USERNAME }}/escaperooms/frontend:latest .
