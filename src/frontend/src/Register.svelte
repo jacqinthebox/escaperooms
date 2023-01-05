@@ -2,12 +2,17 @@
     import Success from "./Success.svelte";
     import {onMount} from "svelte";
 
-    let apiUrl;
+    let apiUrl = '';
 
     onMount(() => {
         apiUrl = `${window.location.protocol}//${window.location.host}`;
-    });
+        const hostParts = window.location.host.split(':');
+        const host = hostParts[0];
 
+        if (host === '127.0.0.1' || host === '0.0.0.0' || host === 'localhost') {
+            apiUrl = `${window.location.protocol}//${host}:5000`;
+        }
+    });
 
     let team_name = '';
     let contact_name = '';
@@ -86,7 +91,8 @@
                     <!-- svelte-ignore a11y-label-has-associated-control -->
                     <label class="label">What will be group name? Be sure to make it a funny one.</label>
                     <div class="control">
-                        <input class="input" type="text" name="team_name" bind:value={team_name} on:input={event => validateTeam(event.target.value)} required>
+                        <input class="input" type="text" name="team_name" bind:value={team_name}
+                               on:input={event => validateTeam(event.target.value)} required>
                     </div>
                 </div>
                 <div class="field">
@@ -100,7 +106,8 @@
                     <!-- svelte-ignore a11y-label-has-associated-control -->
                     <label class="label">What is your email address?</label>
                     <div class="control">
-                        <input class="input" type="text" name="email" bind:value={email} on:input={event => validateEmail(event.target.value)} required>
+                        <input class="input" type="text" name="email" bind:value={email}
+                               on:input={event => validateEmail(event.target.value)} required>
                     </div>
                 </div>
 

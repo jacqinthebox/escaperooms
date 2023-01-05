@@ -7,12 +7,18 @@
     let teamName = ''
     console.log(process.env.API_URL);
 
-
-    let apiUrl;
+    let apiUrl = '';
 
     onMount(() => {
         apiUrl = `${window.location.protocol}//${window.location.host}`;
+        const hostParts = window.location.host.split(':');
+        const host = hostParts[0];
+
+        if (host === '127.0.0.1' || host === '0.0.0.0' || host === 'localhost') {
+            apiUrl = `${window.location.protocol}//${host}:5000`;
+        }
     });
+
 
 
     function getCookie(name) {
@@ -27,7 +33,7 @@
         if (!getCookie('email')) {
             console.log("No email cookie")
             redirect.set('/login');
-            console.log("Generated api url: " + apiUrl)
+            console.log("Generated api url: " + apiUrl + "/api")
             console.log($redirect)
         } else {
             //there is a cookie and we can use its value

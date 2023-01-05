@@ -5,12 +5,18 @@
     //import {teamStore} from './store.js';
     const envApiUrl = process.env.API_URL;
 
-    let apiUrl;
+    let apiUrl = '';
 
     onMount(() => {
         apiUrl = `${window.location.protocol}//${window.location.host}`;
-    });
+        const hostParts = window.location.host.split(':');
+        const host = hostParts[0];
 
+        if (host === '127.0.0.1' || host === '0.0.0.0' || host === 'localhost') {
+            apiUrl = `${window.location.protocol}//${host}:5000`;
+        }
+
+    });
 
 
     let email = '';
