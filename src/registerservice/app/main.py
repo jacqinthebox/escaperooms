@@ -94,7 +94,7 @@ def retrieve_password_hash_for_user(email):
         return None
 
 
-@app.route('/api/register', methods=['GET', 'POST'])
+@app.route('/api/register', methods=['POST'])
 def register():
     if request.method == 'POST':
         data = request.get_json()
@@ -117,9 +117,8 @@ def register():
             new_team = Team(TeamName=team_name, ContactName=contact_name, Email=email, PasswordHash=password_hash)
             db_session.add(new_team)
             db_session.commit()
-            return jsonify({'message': 'Team has been added to the database'}), 200
-    else:
-        return jsonify({'message': 'Helo'}), 200
+            return jsonify({'message': 'Team has been added to the database!'}), 200
+
 
 @app.route('/api/login', methods=['GET', 'POST'])
 def login():
@@ -142,7 +141,7 @@ def login():
         return jsonify({'message': 'The API is working'}), 200
 
 
-@app.route('/')
+@app.route('/api')
 def index():
     return jsonify({'message': 'The API is working'}), 200
 
