@@ -166,3 +166,4 @@ internal
 .eslintcache
 .svelte-kit
 !/src/frontend/.env
+
