@@ -6,7 +6,6 @@ on:
       - src/frontend/*
     branches:
       - main
-  workflow_dispatch:
 
 jobs:
   build:
