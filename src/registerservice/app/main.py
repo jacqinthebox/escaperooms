@@ -94,7 +94,7 @@ def retrieve_password_hash_for_user(email):
         return None
 
 
-@app.route('/api/register', methods=['POST'])
+@app.route('/api/register', methods=['GET','POST'])
 def register():
     data = request.get_json()
     team_name = data['TeamName']
