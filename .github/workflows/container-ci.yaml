@@ -21,7 +21,7 @@ jobs:
         id: next_tag
         uses: dotnet/nbgv@master
         with:
-          args: '-showvariable MajorMinorPatch'
+          args: '-showvariable semver'
       - name: Create Git tag
         uses: actions/create-release@v1
         env:
