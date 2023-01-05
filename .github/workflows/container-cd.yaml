@@ -5,7 +5,7 @@ on:
     paths:
       - src/frontend/*
     branches:
-        - main
+      - main
 
 jobs:
   build:
