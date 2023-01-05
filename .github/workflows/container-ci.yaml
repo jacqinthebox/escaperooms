@@ -13,6 +13,8 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v2
+        with:
+          fetch-depth: 0 # avoid shallow clone so nbgv can do its work.
       - name: Build Docker image
         run: |
           cd src/frontend
@@ -21,13 +23,14 @@ jobs:
         id: next_tag
         uses: dotnet/nbgv@master
         with:
-          args: '-showvariable semver'
+          setAllVars: true
+      - run: echo "NBGV_SemVer2 $NBGV_SemVer2"
       - name: Create Git tag
         uses: actions/create-release@v1
         env:
           GITHUB_TOKEN: ${{ secrets.GH_TOKEN }}
         with:
-          tag_name: ${{ steps.next_tag.outputs.semver }}
+          tag_name: ${{ steps.next_tag.outputs.SemVer2 }}
           release_name: Release ${{ github.sha }}
           draft: true
           prerelease: true
