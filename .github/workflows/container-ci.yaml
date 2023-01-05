@@ -4,9 +4,7 @@ on:
   push:
     paths:
       - src/frontend/*
-    branches:
-      except:
-        - main
+
 
 jobs:
   build:
