@@ -34,8 +34,7 @@ services:
   frontend:
     image: escape-fe:latest
     build:
-      context: .
-      dockerfile: src/frontend/Dockerfile
+      context: ./src/frontend
     depends_on:
       - register-service
       - sqledge

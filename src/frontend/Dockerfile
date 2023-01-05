@@ -2,13 +2,23 @@ FROM node:14-alpine
 
 WORKDIR /usr/src/app
 
-COPY src/frontend/rollup.config.js ./
-COPY src/frontend/package*.json ./
-COPY src/frontend/.env ./
+#COPY src/frontend/rollup.config.js ./
+#COPY src/frontend/package*.json ./
+#COPY src/frontend/.env ./
+#RUN npm install
+
+#COPY src/frontend/src ./src
+#COPY src/frontend/public ./public
+
+COPY rollup.config.js ./
+COPY package*.json ./
+COPY .env ./
 RUN npm install
 
-COPY src/frontend/src ./src
-COPY src/frontend/public ./public
+COPY src ./src
+COPY public ./public
+
+
 
 RUN npm run-script build
 

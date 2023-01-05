@@ -1,0 +1,41 @@
+name: Frontend Container CI
+
+on:
+  push:
+    paths:
+      - src/frontend/*
+#    branches:
+#      except:
+#        - main
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+      - name: Build Docker image
+        run: |
+          cd src/frontend
+          docker build -t ghcr.io/jacqinthebox/escaperooms/frontend:latest .
+      - name: Get next semver tag
+        id: next_tag
+        uses: nerdbank/gitversion-action@v1
+        with:
+          major-minor-patch: true
+      - name: Push Docker image
+        uses: docker/push-action@v1
+        with:
+          registry: docker.pkg.github.com
+          repository: ghcr.io/jacqinthebox
+          tag: latest
+          username: ${{ secrets.GITHUB_USERNAME }}
+          password: ${{ secrets.GITHUB_TOKEN }}
+      - name: Create Git tag
+        uses: actions/create-release@v1
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        with:
+          tag_name: ${{ steps.next_tag.outputs.semver }}
+          release_name: Release ${{ github.sha }}
+          draft: true
+          prerelease: true
