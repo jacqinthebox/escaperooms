@@ -1,0 +1,48 @@
+name: RegisterService Container CI
+
+on:
+  push:
+    paths:
+      - src/registerservice/*
+    branches:
+      - '*'
+      - '!main'
+  workflow_dispatch:
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+        with:
+          fetch-depth: 0 # avoid shallow clone so nbgv can do its work.
+      - name: Get next semver tag
+        id: next_tag
+        uses: dotnet/nbgv@master
+        with:
+          setAllVars: true
+      - name: Login to GitHub Container Registry
+        uses: docker/login-action@v2
+        with:
+          registry: ghcr.io
+          username: ${{ github.repository_owner }}
+          password: ${{ secrets.GH_TOKEN }}
+      - name: Build and push container image
+        uses: docker/build-push-action@v3
+        with:
+          context: src/registerservice
+          registry: ghcr.io
+          repository: jacqinthebox/escaperooms
+          push: true
+          tags: | 
+            ghcr.io/${{ github.repository_owner }}/escaperooms/registerservice:${{ steps.next_tag.outputs.GitCommitId }}
+            ghcr.io/${{ github.repository_owner }}/escaperooms/registerservice:${{ steps.next_tag.outputs.SemVer2 }}
+      - name: Create Git tag
+        uses: actions/create-release@v1
+        env:
+          GITHUB_TOKEN: ${{ secrets.GH_TOKEN }}
+        with:
+          tag_name: ${{ steps.next_tag.outputs.SimpleVersion }}
+          release_name: escaperooms-${{ steps.next_tag.outputs.SimpleVersion }}
+          draft: true
+          prerelease: true
