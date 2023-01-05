@@ -17,3 +17,17 @@ jobs:
         run: |
           cd src/frontend
           docker build -t ghcr.io/${{ secrets.GH_USERNAME }}/escaperooms/frontend:latest .
+      - name: Get next semver tag
+        id: next_tag
+        uses: dotnet/nbgv@master
+        with:
+          args: '-showvariable MajorMinorPatch'
+      - name: Create Git tag
+        uses: actions/create-release@v1
+        env:
+          GITHUB_TOKEN: ${{ secrets.GH_TOKEN }}
+        with:
+          tag_name: ${{ steps.next_tag.outputs.semver }}
+          release_name: Release ${{ github.sha }}
+          draft: true
+          prerelease: true
