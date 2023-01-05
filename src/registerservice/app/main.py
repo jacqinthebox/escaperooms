@@ -94,7 +94,7 @@ def retrieve_password_hash_for_user(email):
         return None
 
 
-@app.route('/register', methods=['POST'])
+@app.route('/api/register', methods=['POST'])
 def register():
     data = request.get_json()
     team_name = data['TeamName']
@@ -119,7 +119,7 @@ def register():
         return jsonify({'message': 'Team has been added to the database'}), 200
 
 
-@app.route('/login', methods=['GET', 'POST'])
+@app.route('/api/login', methods=['GET', 'POST'])
 def login():
     if request.method == 'POST':
         # Get the username and password from the form submission
