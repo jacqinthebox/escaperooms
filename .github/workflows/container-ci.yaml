@@ -27,9 +27,7 @@ jobs:
           password: ${{ secrets.GH_TOKEN }}
           registry: ghcr.io
           repository: jacqinthebox/escaperooms
-          tag: latest
-          tag: ${{ github.sha }}
-          tag: ${{ steps.next_tag.outputs.SemVer2 }}
+          tag: latest {{ github.sha }} ${{ steps.next_tag.outputs.SemVer2 }}
           context: src/frontend
       - name: Create Git tag
         uses: actions/create-release@v1
