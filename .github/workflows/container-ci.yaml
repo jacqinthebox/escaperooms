@@ -35,7 +35,7 @@ jobs:
           push: true
           tags: | 
             ghcr.io/${{ github.repository_owner }}/escaperooms/frontend:latest 
-            ghcr.io/${{ github.repository_owner }}/escaperooms/frontend$:{{ github.sha }} 
+            ghcr.io/${{ github.repository_owner }}/escaperooms/frontend$: {{ steps.next_tag.outputs.GitCommitId }} 
             ghcr.io/${{ github.repository_owner }}/escaperooms/frontend$:{{ steps.next_tag.outputs.SemVer2 }}
       - name: Create Git tag
         uses: actions/create-release@v1
