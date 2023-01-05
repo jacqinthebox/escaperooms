@@ -1,4 +1,4 @@
-name: Helm chart release
+name: Helm chart release yes
 
 on:
   workflow_dispatch:
