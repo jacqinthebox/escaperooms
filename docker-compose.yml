@@ -24,8 +24,7 @@ services:
       - DB_USERNAME=sa
       - APP_SECRET_KEY=SomeNiceSecretKey
     build:
-      context: .
-      dockerfile: src/registerservice/Dockerfile
+      context: ./src/registerservice
     depends_on:
       - sqledge
     ports:

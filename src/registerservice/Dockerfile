@@ -4,7 +4,8 @@ FROM python:3.11
 WORKDIR /app
 
 # Copy the requirements.txt file to the working directory
-COPY src/registerservice/requirements.txt .
+# COPY src/registerservice/requirements.txt .
+COPY requirements.txt .
 
 # Install the dependencies
 RUN curl https://packages.microsoft.com/keys/microsoft.asc | apt-key add -
@@ -28,4 +29,5 @@ EXPOSE 5000
 ENTRYPOINT ["python"]
 
 # Set the command to start the Flask application
-CMD ["src/registerservice/app/main.py"]
+# CMD ["src/registerservice/app/main.py"]
+CMD ["app/main.py"]
