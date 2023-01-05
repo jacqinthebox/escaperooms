@@ -1,22 +1,22 @@
 apiVersion: apps/v1
 kind: StatefulSet
 metadata:
-  name: mssql-statefulset
+  name: sqledge-statefulset
   labels:
-    release: {{ .Release.Name }}-mssql
+    release: {{ .Release.Name }}-sqledge
 spec:
-  serviceName: mssql-service
+  serviceName: sqledge-service
   replicas: 1
   selector:
     matchLabels:
-      app: mssql
+      app: sqledge
   template:
     metadata:
       labels:
-        app: mssql
+        app: sqledge
     spec:
       containers:
-        - name: mssql
+        - name: sqledge
           image: {{ .Values.image }}
           ports:
             - containerPort: 1433
@@ -26,5 +26,5 @@ spec:
             - name: MSSQL_SA_PASSWORD
               valueFrom:
                 secretKeyRef:
-                  name: mssql-sa-secret
+                  name: sqledge-sa-secret
                   key: secret

@@ -20,8 +20,7 @@ RUN ACCEPT_EULA=Y apt-get install -y msodbcsql17
 RUN apt-get install -y libgssapi-krb5-2
 
 # Copy the application code to the working directory
-COPY . .
-
+COPY app .
 # Expose the application on port 5000
 EXPOSE 5000
 
@@ -30,4 +29,4 @@ ENTRYPOINT ["python"]
 
 # Set the command to start the Flask application
 # CMD ["src/registerservice/app/main.py"]
-CMD ["app/main.py"]
+CMD ["main.py"]

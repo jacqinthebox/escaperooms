@@ -1,0 +1,168 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: register-service-service
+spec:
+  type: ClusterIP
+  ports:
+    - port: 5000
+      targetPort: 5000
+  selector:
+    app: register-service
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: register-service-deployment
+  labels:
+    app: register-service
+    platform: aks
+    environment: dev
+    release: cassiopeia
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: register-service
+  template:
+    metadata:
+      labels:
+        app: register-service
+    spec:
+      containers:
+        - name: register-service
+          image: ghcr.io/jacqinthebox/escaperooms/registerservice:latest
+          env:
+            - name: DB_SERVER
+              value: sqledge
+            - name: DB_NAME
+              value: FLOEPS
+            - name: DB_PASSWORD
+              value: 123Tralala^
+            - name: DB_USERNAME
+              value: sa
+            - name: APP_SECRET_KEY
+              value: SomeNiceSecretKey
+          ports:
+            - containerPort: 5000
+          volumeMounts:
+            - name: register-service-volume
+              mountPath: /app
+      volumes:
+        - name: register-service-volume
+          emptyDir: {}
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: frontend-service
+spec:
+  type: ClusterIP
+  ports:
+    - port: 8080
+      targetPort: 8080
+  selector:
+    app: frontend
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: frontend-deployment
+  labels:
+    app: frontend
+    platform: aks
+    environment: dev
+    release: cassiopeia
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: frontend
+  template:
+    metadata:
+      labels:
+        app: frontend
+    spec:
+      containers:
+        - name: frontend
+          image: ghcr.io/jacqinthebox/escaperooms/frontend:1.0.27
+          ports:
+            - containerPort: 8080
+          volumeMounts:
+            - name: frontend-volume
+              mountPath: /app
+      volumes:
+        - name: frontend-volume
+          emptyDir: {}
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: rabbitmq-service
+spec:
+  type: ClusterIP
+  ports:
+    - port: 5672
+      targetPort: 5672
+  selector:
+    app: rabbitmq
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: rabbitmq-deployment
+  labels:
+    app: rabbitmq
+    platform: aks
+    environment: dev
+    release: cassiopeia
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: rabbitmq
+  template:
+    metadata:
+      labels:
+        app: rabbitmq
+    spec:
+      containers:
+        - name: rabbitmq
+          image: rabbitmq:3-management-alpine
+          ports:
+            - containerPort: 5672
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: sqledge-service
+spec:
+  type: ClusterIP
+  ports:
+    - port: 1433
+      targetPort: 1433
+  selector:
+    app: sqledge
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: sqledge-deployment
+  labels:
+    app: sql-edge
+    platform: aks
+    environment: dev
+    release: cassiopeia
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: sqledge
+  template:
+    metadata:
+      labels:
+        app: sqledge
+    spec:
+      containers:
+        - name: sqledge
+          image: mcr.microsoft.com/azure-sql-edge:latest

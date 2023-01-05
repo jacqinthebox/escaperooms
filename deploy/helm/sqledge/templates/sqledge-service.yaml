@@ -1,12 +1,12 @@
 apiVersion: v1
 kind: Service
 metadata:
-  name: mssql-service
+  name: sqledge-service
   labels:
-    release: {{ .Release.Name }}-mssql
+    release: {{ .Release.Name }}-sqledge
 spec:
   selector:
-    app: mssql
+    app: sqledge
   ports:
     - protocol: TCP
       port: 1433
