@@ -1,6 +1,9 @@
 # Escaperooms
 
-The Big Escaperoom Race
+The Big Escaperoom Tracer.
+
+This is a Svelte app merely for demo purposes. It will use SvelteKit in a next iteration, for now it is vanilla Svelte.
+Hardcoded passwords are for demo use.
 
 ## Run locally
 
