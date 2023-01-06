@@ -21,7 +21,7 @@
     let errorMessage = '';
     let registered = false;
     export const emailRegex = /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
-    export const spacesRegex = /^\S*$/;
+    //export const spacesRegex = /^\S*$/;
 
     function validateEmail(email) {
         if (!emailRegex.test(email)) {
@@ -31,13 +31,14 @@
         }
     }
 
+    /*
     function validateTeam(team_name) {
         if (!spacesRegex.test(team_name)) {
             errorMessage = 'No spaces are allowed in the Teamname because it is too complicated to escape them :(.';
         } else {
             errorMessage = '';
         }
-    }
+    } */
 
     async function handleSubmit(event) {
         event.preventDefault();
