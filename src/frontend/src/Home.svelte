@@ -6,15 +6,20 @@
     let email = ''
     let teamName = ''
     let encodedTeamName = ''
+    let spacelessTeamName = ''
+    let elapsedTime = ''
+    window.elapsedTime = elapsedTime;
     let inRoom = false;
     let displayText = "";
     let sentences = ["Solving a nice puzzle..", "Solving puzzle..", "Solving another puzzle...", "Fighting this riddle...", "Freaking out over a puzzle...", "Want to get out but I'm not finished..."];
     let intervalId;
-    let startTime
+    let startTime;
+    let showLink = false;
 
     console.log(process.env.API_URL);
 
     let apiUrl = '';
+    let roomApiUrl = '';
 
     onMount(() => {
         apiUrl = `${window.location.protocol}//${window.location.host}`;
@@ -23,6 +28,7 @@
 
         if (host === '127.0.0.1' || host === '0.0.0.0' || host === 'localhost') {
             apiUrl = `${window.location.protocol}//${host}:5000`;
+            roomApiUrl = `${window.location.protocol}//${host}:5005`;
         }
     });
 
@@ -43,9 +49,10 @@
             console.log($redirect)
         } else {
             //there is a cookie and we can use its value
-            //email = Cookies.get('email')
+            email = getCookie('email')
             encodedTeamName = getCookie('teamName')
             teamName = decodeURIComponent(encodedTeamName)
+            spacelessTeamName = teamName.replace(/\s/g, '')
         }
     });
 
@@ -62,13 +69,44 @@
 
     function leaveRoom() {
         inRoom = false;
+        showLink = true;
         clearInterval(intervalId)
         const endTime = new Date();
         const elapsedTime = (endTime - startTime) / 1000; // elapsed time in seconds
         const minutes = Math.floor(elapsedTime / 60);
         const seconds = Math.floor(elapsedTime % 60);
-        displayText = teamName + " has left the escaperoom after " + minutes + " minutes and " + seconds + "  seconds. Well done!";
+        displayText = teamName + " has left the escape room after " + minutes + " minutes and " + seconds + "  seconds. Well done!";
+        window.elapsedTime = elapsedTime
 
+    }
+
+    async function checkAPI() {
+        try {
+            const response = await fetch(roomApiUrl + '/room/ping');
+            if (response.ok) {
+                console.log('API is active');
+            } else {
+                console.log('API is not active');
+            }
+        } catch (error) {
+            console.log('API is not active');
+        }
+    }
+
+    async function postResult() {
+        await checkAPI();
+        const response = fetch(roomApiUrl + '/room/leave', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({
+                team: spacelessTeamName,
+                email: email,
+                elapsedSeconds: window.elapsedTime
+            })
+        });
+        showLink = false
     }
 
 
@@ -92,9 +130,12 @@
                     <button class="button is-danger" disabled={!inRoom} on:click={leaveRoom}>Leave escape room</button>
                     <p>{displayText}</p>
                 </div>
+                <div class="section">
+                    <button class="button is-info" disabled={!showLink} on:click={postResult}>Post escape result</button>
+                </div>
+
             </div>
         {/if}
-
     </section>
 
 </main>

@@ -22,7 +22,7 @@
     <nav class="navbar" role="navigation" aria-label="main navigation">
         <div class="navbar-brand">
             <a class="navbar-item" href="/">
-                <h1 class="title is-5">The Escape Room Tracer</h1>
+                <h1 class="title is-5">The Escape Room Tournament</h1>
             </a>
 
             <!-- svelte-ignore a11y-missing-attribute -->

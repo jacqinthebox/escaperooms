@@ -1,0 +1,10 @@
+apiVersion: dapr.io/v1alpha1
+kind: Component
+metadata:
+  name: teampubsub
+spec:
+  type: pubsub.azure.servicebus
+  version: v1
+  metadata:
+  - name: connectionString # Required when not using Azure Authentication.
+    value: "Endpoint=sb://kube099-dev-we-namespace.servicebus.windows.net/;SharedAccessKeyName=RootManageSharedAccessKey;SharedAccessKey=YGOWQQ12rXaWXmxRsNirScopI/Hioeqq77ZLzbAX8q0="
