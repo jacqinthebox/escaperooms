@@ -1,4 +1,4 @@
-name: roomservice Container CD
+name: Roomservice Container CD
 
 on:
   push:
