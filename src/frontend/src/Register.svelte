@@ -92,8 +92,7 @@
                     <!-- svelte-ignore a11y-label-has-associated-control -->
                     <label class="label">What will be group name? Be sure to make it a funny one.</label>
                     <div class="control">
-                        <input class="input" type="text" name="team_name" bind:value={team_name}
-                               on:input={event => validateTeam(event.target.value)} required>
+                        <input class="input" type="text" name="team_name" bind:value={team_name} required>
                     </div>
                 </div>
                 <div class="field">
