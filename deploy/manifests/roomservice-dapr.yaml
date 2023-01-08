@@ -38,5 +38,13 @@ spec:
       containers:
         - name: roomservice
           image: ghcr.io/jacqinthebox/escaperooms/roomservice:1.0.52
+          env:
+            - name: SB_QUEUENAME
+              value: imagequeue
+            - name: SB_CONNSTRING
+              valueFrom:
+                secretKeyRef:
+                  name: servicebus-connectionstring-secret
+                  key: secret
           ports:
             - containerPort: 5005
