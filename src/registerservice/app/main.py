@@ -146,9 +146,9 @@ def index():
     return jsonify({'message': 'The API is working'}), 200
 
 
-@app.route('/logout')
-def logout():
-    return jsonify({'message': 'The API is working'}), 200
+@app.route('/api/ping')
+def ping():
+    return jsonify({'reply': 'pong'}), 201
 
 
 if __name__ == '__main__':

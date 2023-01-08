@@ -32,7 +32,7 @@ def leave():
 
 @app.route('/room/ping')
 def ping():
-    return jsonify({'status': 'success'}), 201
+    return jsonify({'reply': 'pong'}), 201
 
 
 if __name__ == '__main__':

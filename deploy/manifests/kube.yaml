@@ -1,21 +1,21 @@
 apiVersion: v1
 kind: Service
 metadata:
-  name: register-service-service
+  name: registerservice-service
 spec:
   type: ClusterIP
   ports:
     - port: 5000
       targetPort: 5000
   selector:
-    app: register-service
+    app: registerservice
 ---
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: register-service-deployment
+  name: registerservice-deployment
   labels:
-    app: register-service
+    app: registerservice
     platform: aks
     environment: dev
     release: cassiopeia
@@ -23,14 +23,14 @@ spec:
   replicas: 1
   selector:
     matchLabels:
-      app: register-service
+      app: registerservice
   template:
     metadata:
       labels:
-        app: register-service
+        app: registerservice
     spec:
       containers:
-        - name: register-service
+        - name: registerservice
           image: ghcr.io/jacqinthebox/escaperooms/registerservice:latest
           env:
             - name: DB_SERVER
@@ -79,7 +79,7 @@ spec:
     spec:
       containers:
         - name: frontend
-          image: ghcr.io/jacqinthebox/escaperooms/frontend:1.0.27
+          image: ghcr.io/jacqinthebox/escaperooms/frontend:latest
           ports:
             - containerPort: 8080
           volumeMounts:
@@ -92,46 +92,50 @@ spec:
             name: frontend-configmap
 ---
 apiVersion: v1
-kind: Service
-metadata:
-  name: rabbitmq-service
-spec:
-  type: ClusterIP
-  ports:
-    - port: 5672
-      targetPort: 5672
-  selector:
-    app: rabbitmq
----
-apiVersion: apps/v1
-kind: Deployment
-metadata:
-  name: rabbitmq-deployment
-  labels:
-    app: rabbitmq
-    platform: aks
-    environment: dev
-    release: cassiopeia
-spec:
-  replicas: 1
-  selector:
-    matchLabels:
-      app: rabbitmq
-  template:
-    metadata:
-      labels:
-        app: rabbitmq
-    spec:
-      containers:
-        - name: rabbitmq
-          image: rabbitmq:3-management-alpine
-          ports:
-            - containerPort: 5672
----
-apiVersion: v1
 data:
   .env: |
     API_URL=http://0.0.0.0:5000
+    NOTE_FROM_FRONTEND_SERVICE=just_for_demo
 kind: ConfigMap
 metadata:
   name: frontend-configmap
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: sqledge-service
+spec:
+  selector:
+    app: sqledge
+  ports:
+    - protocol: TCP
+      port: 1433
+---
+apiVersion: apps/v1
+kind: StatefulSet
+metadata:
+  name: sqledge-statefulset
+spec:
+  serviceName: sqledge-service
+  replicas: 1
+  selector:
+    matchLabels:
+      app: sqledge
+  template:
+    metadata:
+      labels:
+        app: sqledge
+    spec:
+      containers:
+        - name: sqledge
+          image: mcr.microsoft.com/azure-sql-edge
+          ports:
+            - containerPort: 1433
+          env:
+            - name: ACCEPT_EULA
+              value: "Y"
+            - name: MSSQL_SA_PASSWORD
+              valueFrom:
+                secretKeyRef:
+                  name: sqledge-sa-secret
+                  key: secret
