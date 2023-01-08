@@ -55,6 +55,19 @@ def leave():
     return jsonify({'status': 'success'}), 201
 
 
+@app.route('/room/purge')
+def purge():
+    logging.info('Purging images from the queue')
+    with servicebus_client:
+        receiver = servicebus_client.get_queue_receiver(queue_name=sb_queuename, max_wait_time=5)
+        with receiver:
+            for msg in receiver:
+                print("Received: " + str(msg))
+                receiver.complete_message(msg)
+
+    return jsonify({'status': 'success'}), 201
+
+
 @app.route('/room/ping')
 def ping():
     return jsonify({'reply': 'pong'}), 201

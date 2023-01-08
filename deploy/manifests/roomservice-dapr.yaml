@@ -37,7 +37,7 @@ spec:
     spec:
       containers:
         - name: roomservice
-          image: ghcr.io/jacqinthebox/escaperooms/roomservice:1.0.52
+          image: ghcr.io/jacqinthebox/escaperooms/roomservice:1.0.55
           env:
             - name: SB_QUEUENAME
               value: imagequeue
