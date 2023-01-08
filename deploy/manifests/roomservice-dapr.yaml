@@ -37,6 +37,6 @@ spec:
     spec:
       containers:
         - name: roomservice
-          image: ghcr.io/jacqinthebox/escaperooms/roomservice:latest
+          image: ghcr.io/jacqinthebox/escaperooms/roomservice:1.0.52
           ports:
             - containerPort: 5005

@@ -37,7 +37,7 @@ spec:
     spec:
       containers:
         - name: scoreservice
-          image: ghcr.io/jacqinthebox/escaperooms/scoreservice:latest
+          image: ghcr.io/jacqinthebox/escaperooms/scoreservice:1.0.52
           ports:
             - containerPort: 5006
 

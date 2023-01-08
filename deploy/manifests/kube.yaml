@@ -31,7 +31,7 @@ spec:
     spec:
       containers:
         - name: registerservice
-          image: ghcr.io/jacqinthebox/escaperooms/registerservice:latest
+          image: ghcr.io/jacqinthebox/escaperooms/registerservice:1.0.52
           env:
             - name: DB_SERVER
               value: sqledge-service
@@ -79,7 +79,7 @@ spec:
     spec:
       containers:
         - name: frontend
-          image: ghcr.io/jacqinthebox/escaperooms/frontend:latest
+          image: ghcr.io/jacqinthebox/escaperooms/frontend:1.0.52
           ports:
             - containerPort: 8080
           volumeMounts:
