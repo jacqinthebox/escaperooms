@@ -12,4 +12,4 @@ jobs:
       - name: Package chart
         run: helm package deploy/helm/frontend
       - name: Push chart to ghcr
-        run: docker push ghcr.io/${{ github.repository_owner }}/escaperooms/frontend:latest
+        run: helm push frontend-0.1.0.tgz ghcr.io/${{ github.repository_owner }}/escaperooms --version=latest
