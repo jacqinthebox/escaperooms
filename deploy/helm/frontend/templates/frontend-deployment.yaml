@@ -1,0 +1,32 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: frontend-deployment
+  labels:
+    app: frontend
+    platform: aks
+    environment: dev
+    release: {{ .Release.Name }}-frontend-deployment
+spec:
+  replicas: {{ .Values.frontend.replicas }}
+  selector:
+    matchLabels:
+      app: frontend
+  template:
+    metadata:
+      labels:
+        app: frontend
+    spec:
+      containers:
+        - name: frontend
+          image: ghcr.io/jacqinthebox/escaperooms/frontend:{{ .Values.frontend.imageTag}}
+          ports:
+            - containerPort: 8080
+          volumeMounts:
+            - name: frontend-configmap
+              mountPath: /usr/share/app/.env
+              subPath: .env
+      volumes:
+        - name: frontend-configmap
+          configMap:
+            name: frontend-configmap

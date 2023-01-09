@@ -1,18 +1,15 @@
-name: Helm chart release yes
-
+name: Push helm chart to ghcr
 on:
   workflow_dispatch:
 
 jobs:
-  build:
+  deploy:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v2
-      - uses: actions/setup-helm@v2
-        with:
-          version: 3.4.1
-      - run: helm package .
-      - run: |
-          echo "${{ secrets.GH_PAT }}" | docker login docker.pkg.github.com -u "${{ secrets.GH_USERNAME }}" --password-stdin
-          docker build -t docker.pkg.github.com/${{ secrets.REPO_OWNER }}/${{ secrets.REPO_NAME }}:${{ github.sha }} .
-          docker push docker.pkg.github.com/${{ secrets.REPO_OWNER }}/${{ secrets.REPO_NAME }}:${{ github.sha }}
+      - name: Login to ghcr
+        run: docker login ghcr.io -u ${{ github.repository_owner }} -p ${{ secrets.GH_TOKEN }}
+      - name: Package chart
+        run: helm package deploy/helm/frontend
+      - name: Push chart to ghcr
+        run: docker push ghcr.io/${{ github.repository_owner }}/escaperooms/frontend:latest

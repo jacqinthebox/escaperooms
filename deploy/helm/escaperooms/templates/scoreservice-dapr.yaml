@@ -1,0 +1,43 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: scoreservice-service
+spec:
+  type: ClusterIP
+  ports:
+    - port: 5006
+      targetPort: 5006
+  selector:
+    app: scoreservice
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: scoreservice-deployment
+  labels:
+    app: scoreservice
+    platform: aks
+    environment: dev
+    release: cassiopeia
+spec:
+  replicas: 0
+  selector:
+    matchLabels:
+      app: scoreservice
+  template:
+    metadata:
+      labels:
+        app: scoreservice
+      annotations:
+        dapr.io/app-id: scoreservice
+        dapr.io/app-port: "5006"
+        dapr.io/enable-api-logging: "true"
+        dapr.io/enabled: "true"
+        dapr.io/log-level: debug
+    spec:
+      containers:
+        - name: scoreservice
+          image: ghcr.io/jacqinthebox/escaperooms/scoreservice:1.0.52
+          ports:
+            - containerPort: 5006
+
