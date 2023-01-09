@@ -7,6 +7,10 @@ metadata:
     name: scoreservice
 spec:
   scaleTargetRef:
+    cooldownPeriod: 20
+    maxReplicaCount: 5
+    minReplicaCount: 0
+    pollingInterval: 5
     name: scoreservice-deployment
     kind: Deployment
   minReplicaCount: 0
