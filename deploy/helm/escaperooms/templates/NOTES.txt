@@ -1,1 +1,1 @@
-Here are some further instructions.
+This is a very simple Helm chart to get you started.
