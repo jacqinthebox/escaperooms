@@ -5,7 +5,7 @@ metadata:
   labels:
     app: frontend
     platform: aks
-    environment: dev
+    environment: {{ .Values.global.environment }}
     release: {{ .Release.Name }}-frontend-deployment
 spec:
   replicas: {{ .Values.frontend.replicas }}

@@ -1,4 +1,0 @@
-
-frontend:
-  replicas: 1
-  imageTag: 1.0.52

@@ -1,0 +1,38 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: registerservice-deployment
+  labels:
+    app: registerservice
+    platform: aks
+    environment: {{ .Values.global.environment }}
+    release: {{ .Release.Name }}-registerservice-deployment
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: registerservice
+  template:
+    metadata:
+      labels:
+        app: registerservice
+    spec:
+      containers:
+        - name: registerservice
+          image: ghcr.io/jacqinthebox/escaperooms/registerservice:{{ .Values.registerservice.imageTag }}
+          env:
+            - name: DB_SERVER
+              value: sqledge-service
+            - name: DB_NAME
+              value: {{ .Values.registerservice.dbName }}
+            - name: DB_USERNAME
+              value: sa
+            - name: APP_SECRET_KEY
+              value: SomeNiceSecretKey
+            - name: DB_PASSWORD
+              valueFrom:
+                secretKeyRef:
+                  name: sqledge-sa-secret
+                  key: secret
+          ports:
+            - containerPort: 5000

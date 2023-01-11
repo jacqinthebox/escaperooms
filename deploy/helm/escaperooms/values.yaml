@@ -1,0 +1,12 @@
+global:
+  environment: dev
+
+frontend:
+  replicas: 1
+  imageTag: 1.0.52
+
+registerservice:
+  replicas: 1
+  imageTag: 1.0.52
+  dbName: EscapeRoomDB
+

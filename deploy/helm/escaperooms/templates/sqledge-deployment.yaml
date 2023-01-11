@@ -1,0 +1,32 @@
+apiVersion: apps/v1
+kind: StatefulSet
+metadata:
+  name: sqledge-statefulset
+  labels:
+    platform: aks
+    environment: {{ .Values.global.environment }}
+    release: {{ .Release.Name }}-sqledge-deployment
+spec:
+  serviceName: sqledge-service
+  replicas: 1
+  selector:
+    matchLabels:
+      app: sqledge
+  template:
+    metadata:
+      labels:
+        app: sqledge
+    spec:
+      containers:
+        - name: sqledge
+          image: mcr.microsoft.com/azure-sql-edge
+          ports:
+            - containerPort: 1433
+          env:
+            - name: ACCEPT_EULA
+              value: "Y"
+            - name: MSSQL_SA_PASSWORD
+              valueFrom:
+                secretKeyRef:
+                  name: sqledge-sa-secret
+                  key: secret

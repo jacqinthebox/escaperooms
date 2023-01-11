@@ -21,17 +21,3 @@ spec:
               number: 5000
         path: /api/
         pathType: Prefix
-      - backend:
-          service:
-            name: roomservice-service
-            port:
-              number: 5005
-        path: /room/
-        pathType: Prefix
-      - backend:
-          service:
-            name: scoreservice-service
-            port:
-              number: 5006
-        path: /score/
-        pathType: Prefix
