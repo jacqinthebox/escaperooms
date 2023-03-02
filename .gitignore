@@ -1,3 +1,31 @@
+# Compiled binary files
+*.exe
+*.test
+*.out
+
+# Log files
+log/
+*.log
+
+# Dependency directories
+vendor/
+go.sum
+
+# IDE files
+.idea/
+
+# macOS system files
+.DS_Store
+.AppleDouble
+.Trashes
+
+# Temporary files
+*.swp
+*~
+.#*
+
+
+
 # Byte-compiled / optimized / DLL files
 __pycache__/
 *.py[cod]
