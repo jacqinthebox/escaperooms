@@ -34,3 +34,4 @@ uamqp==1.6.3
 urllib3==1.26.13
 Werkzeug==2.2.2
 yarl==1.8.2
+zipp>=3.19.1 # not directly required, pinned by Snyk to avoid a vulnerability
